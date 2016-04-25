@@ -1,0 +1,87 @@
+﻿<span id="yammer-login"></span>
+<div>
+    <input type="text" ng-model="message" placeholder="type your message here..." style="width:1000px; height:100px"/>
+    <button ng-click="sendResponse(null, message)" class="sender">post</button>
+    <div class="fileUpload">
+        <span><i class="fa fa-paperclip"></i></span>
+        <input type="file" class="upload" name="pending_attachment" />
+    </div>
+</div>
+<div id="feed">
+    <div style="border:1px solid black; margin-bottom: 15px;" ng-repeat="thread in threads">
+        <my-input data-id="thread.id">
+            <h3>{{ thread.sender }}</h3> le {{ getDate(thread.created_at) }}
+            <p>{{ thread.body }}</p>
+            <p>il y a {{ thread.replies}} réponses</p>
+            <button>reply</button>
+        </my-input>
+    </div>
+</div>
+
+<div id="contextMenu">
+    <p class="contextItem" id="local_upload">
+        choisir un fichier sur l'ordinateur
+    </p>
+    <p class="contextItem" id="yammer_file">
+        choisir un fichier sur Yammer
+    </p>
+</div>
+
+<form id="form" enctype="multipart/form-data" style="display:none;">
+    <input type="file" class="upload" name="pending_attachment" />
+</form>
+
+<div ng-include="temp1.html"></div>
+
+<script type="text/javascript">
+    yam.getLoginStatus(function (response) {
+        var all_messages, attachments, pending_attachments;
+        if (response.authResponse) {
+            window.pending_attachments = [];
+            attachments = [];
+            all_messages = [];
+            $('body').on('change', 'input[name=pending_attachment]', function (e) {
+                var _data;
+                if (attachments.length > 20) {
+                    return false;
+                }
+                _data = new FormData();
+                _data.append('attachment', e.target.files[0]);
+                $('.post').append('<p id="pending" class="upload">in upload...</p><div class="progressbar"><p class="bar"></p></div>');
+                yam.platform.request({
+                    xhr: function () {
+                        var xhr;
+                        xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function (evt) {
+                            if (evt.lengthComputable) {
+                                return $('#pending').next().children('.bar').css('width', '' + (100 * evt.loaded / evt.total) + '%');
+                            }
+                        }, false);
+                        xhr.addEventListener('progress', function (evt) {
+                            if (evt.lengthComputable) {
+                                return $('#pending').next().children('.bar').css('width', '' + (100 * evt.loaded / evt.total) + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    url: "pending_attachments",
+                    contentType: "multipart/form-data",
+                    data: _data,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#pending').html('<p><i class="fa fa-check" aria-hidden="true"></i>' + data.original_name + ' successfully uploaded!</p>');
+                        $('#pending').removeAttr('id');
+                        return window.pending_attachments.push(data.id);
+                    },
+                    error: function (error) {
+                        return console.log(error);
+                    }
+                });
+                return false;
+            });
+        }
+    });
+</script>

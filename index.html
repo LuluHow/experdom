@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <style>
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+            display: inline-block;
+            top: 40px;
+            left: 950px;
+        }
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+        .bar {
+            background-color: lightgreen;
+            height: 15px;
+        }
+        .progressbar {
+            height: 15px;
+            width: 1000px;
+        }
+        #contextMenu {
+            background-color: grey;
+            max-width: 200px;
+            display: none;
+            position: absolute;
+        }
+        .contextItem {
+            height: 40px;
+            max-width: 200px;
+            background-color: grey;
+            border: 1px solid black;
+            margin: 0px;
+            cursor: pointer;
+        }
+        .yammer_file_item {
+            cursor: pointer;
+        }
+        my-input {
+            border-bottom: 1px solid black;
+        }
+    </style>
+    <title></title>
+</head>
+<body ng-app="App">
+    <div ng-view></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-route.js"></script>
+    <script type="text/javascript" data-app-id="WO0oF67HK2lUMRjkUCI7A" src="https://c64.assets-yammer.com/assets/platform_js_sdk.js"></script>
+    <script src="scripts/directives.js"></script>
+    <script src="scripts/controller.js"></script>
+    <script src="scripts/service.js"></script>
+    <script src="scripts/appp.js"></script>
+</body>
+</html>
